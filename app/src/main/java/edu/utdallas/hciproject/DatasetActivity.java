@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -18,17 +23,22 @@ import cz.msebera.android.httpclient.Header;
 public class DatasetActivity extends Activity {
 
     static ProgressDialog dialog;
+    ListView lvData;
+    DatasetAdapter adapter;
+    List<String[]> dataLines = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dataset);
+        lvData = (ListView) findViewById(R.id.lvDataset);
         showLoader();
         if (getIntent().hasExtra("TOPIC")) {
             String topic = getIntent().getStringExtra("TOPIC");
             getTopic(topic);
         }
-
+        adapter = new DatasetAdapter(DatasetActivity.this, R.layout.row, dataLines);
+        lvData.setAdapter(adapter);
     }
 
     private void getTopic(String topic) {
@@ -40,6 +50,7 @@ public class DatasetActivity extends Activity {
         @Override
         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
             String response = new String(responseBody);
+            Log.d(getClass().getName(), response);
             dismissDialog();
             parseResponse(response);
         }
@@ -61,13 +72,15 @@ public class DatasetActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dismissDialog();
-                Toast.makeText(DatasetActivity.this, "Please check your connection to the internet", Toast.LENGTH_SHORT).show();
+                if (dialog != null && dialog.isShowing()) {
+                    dismissDialog();
+                    Toast.makeText(DatasetActivity.this, "Please check your connection to the internet", Toast.LENGTH_SHORT).show();
+                }
             }
         }, 5000);
-        try{
+        try {
             dialog.show();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -87,13 +100,16 @@ public class DatasetActivity extends Activity {
         }
     }
 
-    private void parseResponse(String response){
-        String[] lines  = response.split("\n");
-        for(String line: lines){
+    private void parseResponse(String response) {
+        String[] lines = response.split("\n");
+        dataLines.clear();
+        for (String line : lines) {
             String[] data = line.split(",");
-
-
+            dataLines.add(data);
         }
+        adapter.setDataset(dataLines);
+        adapter.notifyDataSetChanged();
+
     }
 
 }
