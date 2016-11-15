@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    android:orientation="vertical"
+    tools:context="edu.utdallas.hciproject.MainActivity">
+
+    <include
+        layout="@layout/header"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/general_padding"
+        android:text="Please choose a data set"
+        android:textSize="@dimen/textSize_l"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvIntel"
+        android:layout_width="@dimen/box_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg"
+        android:gravity="center"
+        android:padding="@dimen/general_padding"
+        android:text="Intel"
+        android:elevation="3dp"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/textSize_m"
+        android:layout_marginTop="@dimen/margin1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvMicrosoft"
+        android:layout_width="@dimen/box_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg"
+        android:layout_marginTop="@dimen/margin1"
+        android:gravity="center"
+        android:padding="@dimen/general_padding"
+        android:text="Microsoft"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/textSize_m"
+        android:textStyle="bold" />
+</LinearLayout>
